@@ -1,0 +1,12 @@
+server:
+  port: 8101
+
+security:
+  jwt:
+    public-key: classpath:public.txt
+
+service:
+  auth:
+    token-url: http://localhost:8102/oauth/token
+  user:
+    create-url: http://localhost:8102/user/create
