@@ -27,8 +27,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     private final SecurityProperties securityProperties;
 
-    private TokenStore tokenStore;
-
     @Override
     public void configure(final ResourceServerSecurityConfigurer resources) {
         resources.tokenStore(tokenStore());
@@ -60,10 +58,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Bean
     public TokenStore tokenStore() {
-        if (tokenStore == null) {
-            tokenStore = new JwtTokenStore(jwtAccessTokenConverter());
-        }
-        return tokenStore;
+        return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
     @Bean

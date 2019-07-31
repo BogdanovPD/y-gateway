@@ -85,34 +85,15 @@
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
         </dependency>
-
-        <!--Spring Test-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
         <sourceDirectory>why.studio.gateway/src/main/java</sourceDirectory>
-        <testSourceDirectory>why.studio.gateway/src/test/java</testSourceDirectory>
         <resources>
             <resource>
                 <directory>why.studio.gateway/src/main/resources</directory>
             </resource>
         </resources>
-        <testResources>
-            <testResource>
-                <directory>why.studio.gateway/src/test/resources</directory>
-            </testResource>
-        </testResources>
-
 
         <plugins>
             <plugin>
@@ -145,13 +126,6 @@
                     </annotationProcessorPaths>
                     <source>11</source>
                     <target>11</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <forkCount>0</forkCount>
                 </configuration>
             </plugin>
         </plugins>
