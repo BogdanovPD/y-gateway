@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="google-signin-client_id" content="496771859947-ujcues7hhhb6h076v2hpp735p8kom37m.apps.googleusercontent.com">
+</head>
+<body>
+<iframe src="https://calendar.google.com/calendar/embed?src=why-studio.com_j8nfk3ntc4rtfaii5qeqia89ho%40group.calendar.google.com&ctz=Europe%2FMoscow"
+        style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
+<script>
+    function onSuccess(googleUser) {
+        console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    }
+    function onFailure(error) {
+        console.log(error);
+    }
+    function renderButton() {
+        gapi.signin2.render('my-signin2', {
+            'scope': 'profile email',
+            'width': 240,
+            'height': 50,
+            'longtitle': true,
+            'theme': 'dark',
+            'onsuccess': onSuccess,
+            'onfailure': onFailure
+        });
+    }
+</script>
+
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+</body>
+
+
+</html>

@@ -15,7 +15,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping(value = "api/oauth/token", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "oauth/token", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getAccessToken(@RequestBody TokenRequest tokenRequest) {
         return ResponseEntity.ok(authService.getAccessToken(tokenRequest.getClientId(), tokenRequest.getClientSecret(),
                 tokenRequest.getEmail(), tokenRequest.getPassword()));

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: y-gateway
+  cloud:
+    config:
+      fail-fast: true

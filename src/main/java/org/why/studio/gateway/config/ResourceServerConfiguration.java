@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -41,8 +42,34 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .httpBasic().disable()
                 .authorizeRequests()
                 .antMatchers(
-                        "/api/oauth/token")
+                        "/oauth/token")
                 .permitAll()
+                .antMatchers(HttpMethod.DELETE,
+                        "/api/schedules/services/**"
+                ).hasAuthority("ROLE_SUPER_ADMIN")
+                .antMatchers(
+                        "/api/auth/user/admin/create/init"
+                ).hasAuthority("ROLE_SUPER_ADMIN")
+
+                .antMatchers(HttpMethod.POST,
+                        "/api/schedules/services",
+                        "/api/schedules/specialist/**/services"
+                ).hasAnyAuthority("ROLE_SUPER_ADMIN", "ROLE_ADMIN")
+                .antMatchers(
+                        "/api/auth/user/spec/create/init",
+                        "/api/auth/user/all"
+                ).hasAnyAuthority("ROLE_SUPER_ADMIN", "ROLE_ADMIN")
+
+                .antMatchers(
+                        "/api/schedules/consultation-requests/spec/**",
+                        "/api/schedules/consultation-requests/spec/**/approve",
+                        "/api/schedules/consultation-requests/spec/**/reject",
+                        "/api/schedules/specialist/**/client-requests",
+                        "/api/schedules/specialist/**/clients",
+                        "/api/schedules/specialist/**/clients/accept-request/**",
+                        "/api/schedules/specialist/**/clients/reject-request/**"
+                ).hasAnyAuthority("ROLE_SUPER_ADMIN", "ROLE_ADMIN", "ROLE_SPECIALIST")
+
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -74,6 +101,18 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String uuidPathPattern() {
+        return "[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$";
+    }
+
+    private String specAccess() {
+        return "#oauth2.clientHasAnyRole('ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_SPECIALIST')";
+    }
+
+    private String clientAccess() {
+        return "#oauth2.clientHasAnyRole('ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_SPECIALIST', 'ROLE_CLIENT')";
     }
 
 }
