@@ -53,6 +53,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
                 .antMatchers(HttpMethod.POST,
                         "/api/schedules/services",
+                        "/api/schedules/calendars",
                         "/api/schedules/specialist/**/services"
                 ).hasAnyAuthority("ROLE_SUPER_ADMIN", "ROLE_ADMIN")
                 .antMatchers(
