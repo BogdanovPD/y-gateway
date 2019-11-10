@@ -1,6 +1,6 @@
 .idea
+.attach*
 target
 log
-.m2/repository
 
 *.iml

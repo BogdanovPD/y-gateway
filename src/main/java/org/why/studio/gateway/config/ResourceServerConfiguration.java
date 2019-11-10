@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -57,14 +58,14 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                         "/api/schedules/specialist/**/services"
                 ).hasAnyAuthority("ROLE_SUPER_ADMIN", "ROLE_ADMIN")
                 .antMatchers(
-                        "/api/auth/user/spec/create/init",
+                        "/api/auth/user/specName/create/init",
                         "/api/auth/user/all"
                 ).hasAnyAuthority("ROLE_SUPER_ADMIN", "ROLE_ADMIN")
 
                 .antMatchers(
-                        "/api/schedules/consultation-requests/spec/**",
-                        "/api/schedules/consultation-requests/spec/**/approve",
-                        "/api/schedules/consultation-requests/spec/**/reject",
+                        "/api/schedules/consultation-requests/specName/**",
+                        "/api/schedules/consultation-requests/specName/**/approve",
+                        "/api/schedules/consultation-requests/specName/**/reject",
                         "/api/schedules/specialist/**/client-requests",
                         "/api/schedules/specialist/**/clients",
                         "/api/schedules/specialist/**/clients/accept-request/**",

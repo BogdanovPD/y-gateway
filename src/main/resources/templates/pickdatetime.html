@@ -1,0 +1,122 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet"/>-->
+    <script th:src="@{js/jquery-3.4.1.min.js}" type="text/javascript" charset="UTF-8"></script>
+    <script th:src="@{js/popper.min.js}" type="text/javascript" charset="UTF-8"></script>
+    <script th:src="@{js/bootstrap.min.js}" type="text/javascript" charset="UTF-8"></script>
+    <script th:src="@{js/bootstrap-select.min.js}" type="text/javascript" charset="UTF-8"></script>
+    <script th:src="@{js/legacy.js}" type="text/javascript" charset="UTF-8"></script>
+    <script th:src="@{js/picker.js}" type="text/javascript" charset="UTF-8"></script>
+    <script th:src="@{js/picker.date.js}" type="text/javascript" charset="UTF-8"></script>
+    <script th:src="@{js/picker.time.js}" type="text/javascript" charset="UTF-8"></script>
+
+    <link th:href="@{css/y-style.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/bootstrap-select.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/default.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/default.date.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{css/default.time.css}" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 header-space"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <label for="spec">Ваш специалист: </label><input id="spec" class="disabled data-input" th:value="${specName}">
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 data-input-separator"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <select id="serv" name="serv" class="selectpicker form-control">
+                <option value="" hidden>Выберите услугу</option>
+                <option th:each="serv : ${servs}"
+                        th:value="${serv.id}"
+                        th:utext="${serv.name}"/>
+            </select>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 data-input-separator"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <input id="datepicker" placeholder="Выберите дату" class="data-input">
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 data-input-separator"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <input id="timepicker" placeholder="Выберите время" class="data-input">
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+
+</body>
+
+<script type="text/javascript">
+    currentToken = function() {
+        var token = null;
+        var url = 'oauth/token/current';
+        $.ajax({
+            async: false,
+            url: url,
+            type: 'GET',
+            contentType: 'application/json',
+            success: function (result) {
+                token = result;
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        return token;
+    };
+    busyDates = function() {
+        var url = 'api/schedules/month/busy';
+        var token = currentToken();
+        console.log(token);
+        $.ajax({
+            url: url,
+            type: 'GET',
+            contentType: 'application/json',
+            data:
+                {
+                    specId: "[[${specId}]]",
+                    date: "2019-11-01"
+                },
+            headers: {
+                'Authorization': 'Bearer '.concat(token)
+            },
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    };
+    $('#datepicker').pickadate( {
+        min: new Date(),
+        onChangeMonth: busyDates()
+    });
+    $('#timepicker').pickatime();
+</script>
+
+</html>
